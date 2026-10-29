@@ -90,7 +90,11 @@ def listening_port() -> Iterator[int]:
 
 @pytest.fixture
 def closed_port() -> int:
-    """A port on 127.0.0.1 that nothing is listening on (a "closed" port)."""
+    """A port on 127.0.0.1 that nothing is listening on (a "closed" port).
+
+    Tests that connect to it use a generous timeout (5 s): Windows takes about
+    2 seconds to report a refused connection, even on localhost.
+    """
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(("127.0.0.1", 0))
     port = sock.getsockname()[1]

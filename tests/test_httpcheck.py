@@ -70,7 +70,7 @@ def test_query_string_is_sent(http_server):
 
 
 def test_connection_refused(closed_port):
-    result = check_url(f"http://127.0.0.1:{closed_port}/", timeout=1)
+    result = check_url(f"http://127.0.0.1:{closed_port}/", timeout=5)
     assert result.status is None and "refused" in result.error
 
 

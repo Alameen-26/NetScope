@@ -105,14 +105,14 @@ def test_ping_json(monkeypatch, capsys):
 # ---- scan (real sockets on 127.0.0.1)
 
 def test_scan_localhost_finds_open_port(listening_port, closed_port, capsys):
-    code, out, err = run(capsys, "scan", "127.0.0.1", "-p", f"{listening_port},{closed_port}", "-t", "1")
+    code, out, err = run(capsys, "scan", "127.0.0.1", "-p", f"{listening_port},{closed_port}", "-t", "5")
     assert code == 0 and f"{listening_port}/tcp" in out and "1 open, 1 closed" in out
     assert err == ""  # no warning for your own machine
 
 
 def test_scan_show_closed_and_json(listening_port, closed_port, capsys):
     code, out, _ = run(capsys, "scan", "127.0.0.1", "-p", f"{listening_port},{closed_port}",
-                       "--show-closed", "--json")
+                       "-t", "5", "--show-closed", "--json")
     doc = json.loads(out)
     assert doc["data"]["kind"] == "loopback"
     states = {p["port"]: p["state"] for p in doc["data"]["hosts"][0]["ports"]}

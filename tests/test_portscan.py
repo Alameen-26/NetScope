@@ -81,7 +81,7 @@ def test_check_port_open(listening_port):
 
 
 def test_check_port_closed(closed_port):
-    result = check_port("127.0.0.1", closed_port, timeout=1)
+    result = check_port("127.0.0.1", closed_port, timeout=5)
     assert result.state == CLOSED
 
 
@@ -154,7 +154,7 @@ def test_scan_ports_with_fake_checker_keeps_order_and_counts():
 
 
 def test_scan_ports_real_localhost(listening_port, closed_port):
-    result = scan_ports("127.0.0.1", sorted([listening_port, closed_port]), timeout=1, workers=4)
+    result = scan_ports("127.0.0.1", sorted([listening_port, closed_port]), timeout=5, workers=4)
     by_port = {r.port: r.state for r in result.results}
     assert by_port == {listening_port: OPEN, closed_port: CLOSED}
 

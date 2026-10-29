@@ -49,13 +49,17 @@ def validate_host(text: str, system: Optional[str] = None) -> str:
     return host
 
 
-def resolve(host: str, resolver: Callable[..., list] = socket.getaddrinfo) -> tuple[str, int]:
+def resolve(host: str, resolver: Optional[Callable[..., list]] = None) -> tuple[str, int]:
     """Look up ``host`` once and return (ip, address_family).
 
     IPv4 is preferred when a name has both kinds of address (e.g. "localhost"
     -> 127.0.0.1 rather than ::1), because most home routers and local
     services listen on IPv4. Raises UnknownHost if the lookup fails.
     """
+    # Looked up at call time (not as a default argument) so the test suite's
+    # offline guard, which patches socket.getaddrinfo, also covers this lookup.
+    if resolver is None:
+        resolver = socket.getaddrinfo
     try:
         info = resolver(host, None, proto=socket.IPPROTO_TCP)
     except socket.gaierror as exc:

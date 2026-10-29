@@ -184,15 +184,21 @@ def test_single_reply_has_zero_jitter():
 
 # ---- ping() chooses the method
 
+def fake_resolve(host):
+    """Stand-in for hosts.resolve, so these tests never do a real DNS lookup."""
+    return "192.0.2.1", socket.AF_INET
+
+
 def test_auto_falls_back_to_tcp():
     result = ping("h", count=1, method="auto", runner=fake_runner(exc=FileNotFoundError()),
-                  connect=lambda *a, **k: FakeSock())
+                  connect=lambda *a, **k: FakeSock(), resolver=fake_resolve)
     assert result.method == "tcp"
 
 
 def test_icmp_only_does_not_fall_back():
     with pytest.raises(PingUnavailable):
-        ping("h", method="icmp", runner=fake_runner(exc=FileNotFoundError()))
+        ping("h", method="icmp", runner=fake_runner(exc=FileNotFoundError()),
+             resolver=fake_resolve)
 
 
 def test_auto_prefers_system_ping():

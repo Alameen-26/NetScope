@@ -66,13 +66,15 @@ def _unique(items: list[str]) -> list[str]:
     return list(dict.fromkeys(items))
 
 
-def lookup(name: str, resolver: Callable[..., list] = socket.getaddrinfo) -> LookupResult:
+def lookup(name: str, resolver: Optional[Callable[..., list]] = None) -> LookupResult:
     """Resolve a host name to its IPv4 and IPv6 addresses."""
+    # Looked up at call time (not as a default argument), see hosts.resolve.
+    resolve_fn: Callable[..., list] = resolver if resolver is not None else socket.getaddrinfo
     result = LookupResult(name)
     start = time.perf_counter()
     try:
         # SOCK_STREAM stops getaddrinfo returning the same address once per socket type.
-        answers = resolver(name, None, socket.AF_UNSPEC, socket.SOCK_STREAM)
+        answers = resolve_fn(name, None, socket.AF_UNSPEC, socket.SOCK_STREAM)
     except socket.gaierror as exc:
         result.error = f"lookup failed: {exc.strerror or exc}"
         return result

@@ -1,6 +1,7 @@
 """Tests for netscope.trace using recorded output from each traceroute tool."""
 from __future__ import annotations
 
+import socket
 import subprocess
 
 import pytest
@@ -84,22 +85,29 @@ def runner_returning(stdout, returncode=0, stderr=""):
     return lambda cmd, **k: subprocess.CompletedProcess(cmd, returncode, stdout=stdout, stderr=stderr)
 
 
+def fake_resolve(host):
+    """Stand-in for hosts.resolve, so these tests never do a real DNS lookup."""
+    return "192.0.2.1", socket.AF_INET
+
+
 def test_trace_runs_tool_and_parses():
-    result = trace("example.com", tool="traceroute", runner=runner_returning(TRACEROUTE))
+    result = trace("example.com", tool="traceroute", runner=runner_returning(TRACEROUTE),
+                   resolver=fake_resolve)
     assert result.error is None and len(result.hops) == 4
     assert result.to_dict()["hops"][0]["address"] == "192.168.1.1"
 
 
 def test_trace_reports_tool_error():
     result = trace("bad", tool="traceroute",
-                   runner=runner_returning("", 2, "bad: Name or service not known"))
+                   runner=runner_returning("", 2, "bad: Name or service not known"),
+                   resolver=fake_resolve)
     assert result.hops == [] and "Name or service" in result.error
 
 
 def test_trace_timeout():
     def slow(cmd, **k):
         raise subprocess.TimeoutExpired(cmd, 1)
-    assert "too long" in trace("h", tool="traceroute", runner=slow).error
+    assert "too long" in trace("h", tool="traceroute", runner=slow, resolver=fake_resolve).error
 
 
 def test_trace_unavailable(monkeypatch):
@@ -112,7 +120,7 @@ def test_trace_tool_vanished():
     def missing(cmd, **k):
         raise FileNotFoundError()
     with pytest.raises(TraceUnavailable):
-        trace("h", tool="traceroute", runner=missing)
+        trace("h", tool="traceroute", runner=missing, resolver=fake_resolve)
 
 
 def test_trace_rejects_bad_hops():

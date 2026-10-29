@@ -1,6 +1,7 @@
-<p align="left">
-  <img src="docs/brand/niyisoft-badge.svg" alt="NiyiSoft" height="28">
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/brand/banner-dark.svg">
+  <img src="docs/brand/banner-light.svg" alt="NetScope: network toolkit for the command line. Made by NiyiSoft" width="100%">
+</picture>
 
 # NetScope
 
@@ -15,7 +16,10 @@ ports are open, what does a name resolve to, which routers are in the way, and i
 It runs on Windows, macOS and Linux, has **no required dependencies** (standard library only), and
 never needs administrator rights.
 
-![Scanning localhost](docs/screenshots/scan-localhost.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/terminal-scan-dark.svg">
+  <img src="docs/screenshots/terminal-scan-light.svg" alt="netscope scan localhost: two open ports found on this computer">
+</picture>
 
 ## Features
 
@@ -33,7 +37,9 @@ Every command supports:
 
 - `--json` to print machine-readable JSON (with a `schema_version` field) instead of a table
 - `--save report.json` or `--save report.html` to write a report file. The folder must already
-  exist, and an existing file is only replaced if you add `--force`
+  exist, and an existing file is only replaced if you add `--force`. The HTML report is one
+  self-contained file with a light and a dark theme that follows your system setting (print always
+  uses the light one); it loads nothing from the internet and runs no scripts
 - `--help` for its options and examples
 
 Colour is used when printing to a terminal and switched off when piping or when `NO_COLOR` is set.
@@ -176,9 +182,18 @@ of the check itself. The report is written before the result is printed.
 
 ### Screenshots
 
-| HTTP and TLS check | Help and ping |
-|---|---|
-| ![HTTP check](docs/screenshots/http-check.svg) | ![Help and ping](docs/screenshots/help-and-ping.svg) |
+HTTP check against a local test server (`python -m http.server`):
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/terminal-http-dark.svg">
+  <img src="docs/screenshots/terminal-http-light.svg" alt="netscope http http://127.0.0.1:8123/: status 200, response time and headers">
+</picture>
+
+Help and ping:
+
+![Help and ping](docs/screenshots/help-and-ping.svg)
+
+All screenshots show only this computer (localhost) and local test servers.
 
 ## How it works
 

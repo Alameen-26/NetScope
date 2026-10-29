@@ -2,7 +2,16 @@
 
 All notable changes to this project are documented here.
 
-## Unreleased
+## v0.2.0 (unreleased)
+
+### Changed
+- New HTML report theme (`--save report.html`): light and dark versions that follow the system
+  setting, a brand band, monospaced values, zebra-striped tables and a key column on key/value
+  tables. Wide tables scroll sideways and key/value rows stack on phones; print always uses the
+  light theme. Still inline CSS only, so the report's Content-Security-Policy is unchanged. The
+  report also sets a viewport so it fits phone screens.
+- README: new banner and terminal screenshots (scan of localhost, HTTP check against a local test
+  server), with light and dark versions picked by GitHub's theme.
 
 ### Fixed
 - Windows: closed ports were reported as "filtered". Windows retries a refused connection and only

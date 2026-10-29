@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netscope"
+version = "0.1.0"
+description = "Check reachability, open ports, DNS, routes and websites on networks you own."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "NiyiSoft (Alameen-26)" }]
+# No required dependencies: everything uses the standard library.
+dependencies = []
+classifiers = [
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: System :: Networking :: Monitoring",
+]
+
+[project.optional-dependencies]
+# psutil adds the network interface list to "netscope info".
+full = ["psutil>=5.9"]
+# dev: everything needed to run the tests and the type check.
+dev = ["pytest>=7", "psutil>=5.9", "mypy>=1.8", "types-psutil", "pyflakes>=3"]
+
+[project.scripts]
+netscope = "netscope.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["netscope*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["netscope"]
+strict_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+check_untyped_defs = true

@@ -67,8 +67,8 @@ jobs:
           python -m netscope info
           python -m netscope scan 127.0.0.1 --ports 1-1024 --json
 
-      # Windows answers a refused connection slowly (it retries for about a
-      # second), which is why its default --timeout is 2 s. This runs a full
+      # Windows answers a refused connection slowly (it retries for about two
+      # seconds), which is why its default --timeout is 3 s. This runs a full
       # 1-1024 scan of the runner itself with that default, so the log shows
       # how long it takes and how many ports came back closed vs filtered.
       - name: Windows loopback scan

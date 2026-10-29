@@ -433,7 +433,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="ports: 'common' (default), 'all', or a list like 22,80,8000-8100")
     p.add_argument("-t", "--timeout", type=_timeout, default=portscan.DEFAULT_TIMEOUT,
                    help=f"seconds to wait per port (default {portscan.DEFAULT_TIMEOUT:g}; "
-                        "2 on Windows, which retries refused connections)")
+                        "3 on Windows, which retries refused connections)")
     p.add_argument("-w", "--workers", type=_workers, default=portscan.DEFAULT_WORKERS,
                    help=f"ports checked at the same time, 1-500 (default {portscan.DEFAULT_WORKERS})")
     p.add_argument("--show-closed", action="store_true", help="list closed and filtered ports too")

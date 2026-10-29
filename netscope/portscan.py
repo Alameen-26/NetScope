@@ -36,11 +36,12 @@ def default_timeout(system: Optional[str] = None) -> float:
     """Seconds to wait for each port.
 
     0.5 s is plenty on a LAN or localhost - except on Windows, which quietly
-    retries a refused connection for about 1-2 seconds before giving up. With
-    a short timeout, closed ports would wrongly show as "filtered", so Windows
-    gets 2 seconds by default.
+    retries a refused connection (it resends the connection request after a
+    reset) and only reports "refused" after about 2 seconds. With a shorter
+    timeout, closed ports would wrongly show as "filtered", so Windows gets
+    3 seconds by default.
     """
-    return 2.0 if (system or platform.system()) == "Windows" else 0.5
+    return 3.0 if (system or platform.system()) == "Windows" else 0.5
 
 
 DEFAULT_TIMEOUT = default_timeout()

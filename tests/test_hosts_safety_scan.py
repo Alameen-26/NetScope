@@ -255,5 +255,5 @@ def test_cli_out_of_handles_is_exit_4(monkeypatch, capsys):
 # ---- Windows default timeout (M8)
 
 def test_default_timeout_per_os():
-    assert default_timeout("Windows") == 2.0
+    assert default_timeout("Windows") == 3.0
     assert default_timeout("Linux") == 0.5 and default_timeout("Darwin") == 0.5

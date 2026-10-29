@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## Unreleased
+
+### Fixed
+- Windows: closed ports were reported as "filtered". Windows retries a refused connection and only
+  reports it after about 2 seconds, so the default per-port `--timeout` there is now 3 s (was 2 s).
+  Localhost tests that expect "closed" or "connection refused" use a 5 s timeout, so they pass on
+  the Windows CI runners too.
+- Ping and traceroute tests no longer do real DNS lookups (the name lookup is passed in, so the
+  offline guard applies).
+
 ## v0.1.0 (2026-10-29, released)
 
 First release, published on GitHub on 2026-10-29.

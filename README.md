@@ -75,8 +75,8 @@ $ netscope scan localhost --ports all --workers 50 --save scan.html
 ```
 
 Times under one millisecond are shown as `<1 ms` (and stored as `0.5` in JSON). The default
-`--timeout` per port is 0.5 s, or **2 s on Windows**, because Windows retries a refused connection
-for about a second before reporting it; a shorter timeout there would mark closed ports as filtered.
+`--timeout` per port is 0.5 s, or **3 s on Windows**, because Windows retries a refused connection
+and only reports it after about 2 seconds; a shorter timeout there would mark closed ports as filtered.
 
 One scan is capped at **65,536 connection attempts** (addresses x ports), so
 `scan 192.168.1.0/24 --ports all` is refused until you narrow it or raise the cap with

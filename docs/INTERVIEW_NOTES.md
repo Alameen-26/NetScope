@@ -38,7 +38,10 @@ It has 389 tests that run without internet access and CI on Windows, macOS and L
   received ("connection refused"), **filtered** = nothing came back before the timeout, usually a
   firewall silently dropping packets.
 - Trade-off: a short timeout is fast but may call a slow port "filtered" on a busy network; a long
-  one is accurate but slow. Default is 0.5 s per port; the user can change it.
+  one is accurate but slow. Default is 0.5 s per port (3 s on Windows); the user can change it.
+- Windows is the exception: after a reset it resends the connection request a couple of times and
+  only reports "refused" after about 2 seconds. With a 1-2 s timeout, closed ports on Windows came
+  back as "filtered" (CI caught this on the Windows runners), so the Windows default is 3 s.
 - Worst case for a scan is roughly `ports / workers x timeout`, which is why the worker pool matters.
 
 ## Sockets
